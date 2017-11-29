@@ -12,6 +12,8 @@ public class MemoryGame {
         //l.add("five");
 
         JTabbedPane tabbedPane = new JTabbedPane();
+
+        tabbedPane.addTab("Input", (new MemoryGameInputTab().createMemoryGameInputTab()));
         tabbedPane.addTab("Game", (new MemoryGameGUITab()).createMemoryGameGUITab((ArrayList<String>) l));
 
         JFrame window = new JFrame("Memory Game");

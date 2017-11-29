@@ -7,15 +7,17 @@ import java.util.Collections;
 import java.util.List;
 
 public class MemoryGameGUITab extends JPanel {
-    private List values;
+    private List<String> values;
+    private List<String> duplicateValues;
     private JPanel gamePanel;
     private Card compareCard = null;
     private boolean cardFlipped = false;
     private boolean timerDone = true;
     private final int cardDelay = 500;
 
-    public JPanel createMemoryGameGUITab(ArrayList<String> values) {
-        this.values = values;
+    public JPanel createMemoryGameGUITab(ArrayList<String> strings) {
+        values = strings;
+        duplicateValues = new ArrayList<>();
 
         gamePanel = new JPanel();
         gamePanel.setLayout(new GridLayout(4, 4));
@@ -23,14 +25,15 @@ public class MemoryGameGUITab extends JPanel {
         //duplicate each element in values
         int ogSize = values.size();
         for (int i = 0; i < ogSize; i++) {
-            values.add(values.get(i));
+            duplicateValues.add(values.get(i));
+            duplicateValues.add(values.get(i));
         }
 
-        Collections.shuffle(values); //randomize order of cards
+        Collections.shuffle(duplicateValues); //randomize order of cards
 
         //add a card to values for each element in values
-        for (int i = 0; i < values.size(); i++) {
-            Card card = new Card(values.get(i));
+        for (int i = 0; i < duplicateValues.size(); i++) {
+            Card card = new Card(duplicateValues.get(i));
             card.addActionListener(new FlipListener());
             gamePanel.add(card);
         }
@@ -67,9 +70,9 @@ public class MemoryGameGUITab extends JPanel {
                             gamePanel.repaint();
 
                             //removes values twice because it exists as a pair in values
-                            values.remove(clickedCard.getValue());
-                            values.remove(compareCard.getValue());
-                            if (values.isEmpty()) { //if game is over
+                            duplicateValues.remove(clickedCard.getValue());
+                            duplicateValues.remove(compareCard.getValue());
+                            if (duplicateValues.isEmpty()) { //if game is over
                                 System.out.println("game over1");
                                 gamePanel.removeAll();
                                 gamePanel.setLayout(new FlowLayout());
