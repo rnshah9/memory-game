@@ -15,6 +15,10 @@ public class MemoryGameGUITab extends JPanel {
     private boolean timerDone = true;
     private final int cardDelay = 500;
 
+    /**
+     * Creates and returns a "Game" tab
+     * @param strings the values that will be on the cards
+     */
     public JPanel createMemoryGameGUITab(ArrayList<String> strings) {
         values = strings;
         duplicateValues = new ArrayList<>();

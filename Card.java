@@ -11,11 +11,10 @@ public class Card extends JButton {
 
     public void flip() {
         if (isFlipped) {
-
             setBackground(Color.GRAY);
             setText("");
             isFlipped = false;
-        } else { //unFlipped
+        } else { //if unFlipped
             setText(value);
             setBackground(Color.WHITE);
             isFlipped = true;
