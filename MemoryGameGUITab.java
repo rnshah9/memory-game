@@ -37,7 +37,7 @@ public class MemoryGameGUITab extends JPanel {
 
         //add a card to the gamePanel for each element in values
         for (int i = 0; i < duplicateValues.size(); i++) {
-            Card card = new Card(duplicateValues.get(i));
+                Card card = new Card(duplicateValues.get(i));
             card.addActionListener(new FlipListener());
             gamePanel.add(card);
         }
@@ -88,7 +88,7 @@ public class MemoryGameGUITab extends JPanel {
                     timer.start();
 
                 } else { //if cards don't match
-                    //momentarily show cards before flipping back over
+                    //momentarily keep cards flipped (shown) before flipping back over
                     Timer timer = new Timer(cardDelay, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e1) {
