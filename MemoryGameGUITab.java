@@ -35,7 +35,7 @@ public class MemoryGameGUITab extends JPanel {
 
         Collections.shuffle(duplicateValues); //randomize order of cards
 
-        //add a card to values for each element in values
+        //add a card to the gamePanel for each element in values
         for (int i = 0; i < duplicateValues.size(); i++) {
             Card card = new Card(duplicateValues.get(i));
             card.addActionListener(new FlipListener());
@@ -48,18 +48,15 @@ public class MemoryGameGUITab extends JPanel {
     private class FlipListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (!timerDone) { //if user is trying to click before cards have been flipped back/cleared
+            if (!timerDone) { //if user is trying to click while cards are being shown
                 return;
             }
             Card clickedCard = (Card) e.getSource();
-            if (cardFlipped && clickedCard.equals(compareCard)) { //if user clicks same card, do nothing
-                return;
-            }
             clickedCard.flip();
-            if (!cardFlipped) { //if no card yet flipped
+            if (!cardFlipped) { //if compareCard had not been chosen
                 compareCard = clickedCard;
                 cardFlipped = true;
-            } else { //if card has been flipped
+            } else { //if compareCard had been chosen
                 if (clickedCard.getValue().equals(compareCard.getValue())) { //if cards match
                     Timer timer = new Timer(cardDelay, new ActionListener() { //momentarily show cards before deleting
                         @Override
@@ -73,17 +70,17 @@ public class MemoryGameGUITab extends JPanel {
                             gamePanel.add(new JPanel(), compareCardIndex); //empty JPanel to fill space in GridLayout
                             gamePanel.repaint();
 
-                            //removes values twice because it exists as a pair in values
+                            //removes values from list twice because it exists as a pair in values
                             duplicateValues.remove(clickedCard.getValue());
                             duplicateValues.remove(compareCard.getValue());
+
                             if (duplicateValues.isEmpty()) { //if game is over
-                                System.out.println("game over1");
                                 gamePanel.removeAll();
                                 gamePanel.setLayout(new FlowLayout());
-                                gamePanel.add(new JLabel("Game over!"));
+                                gamePanel.add(new JLabel("Game over! Go back to the Input tab to play again."));
                                 gamePanel.revalidate();
                             }
-                            timerDone = true;
+                            timerDone = true; //cards have been shown and user can resume normal action
                         }
                     });
                     timer.setRepeats(false);
@@ -91,6 +88,7 @@ public class MemoryGameGUITab extends JPanel {
                     timer.start();
 
                 } else { //if cards don't match
+                    //momentarily show cards before flipping back over
                     Timer timer = new Timer(cardDelay, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e1) {
@@ -103,8 +101,7 @@ public class MemoryGameGUITab extends JPanel {
                     timerDone = false;
                     timer.start();
                 }
-                cardFlipped = false;
-                //compareCard = null;
+                cardFlipped = false; //either way, both cards have been deleted or flipped back over
             }
         }
     }
